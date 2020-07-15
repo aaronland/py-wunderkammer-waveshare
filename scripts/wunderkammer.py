@@ -4,7 +4,6 @@ from waveshare_epd import epd7in5_v2
 from PIL import Image
 
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
 
 import sqlite3
 import json
@@ -49,7 +48,6 @@ class wunderkammer_source(source):
             data_url = oembed_data["data_url"]
 
             rsp = urlopen(data_url)
-
             return Image.open(rsp)
         
         except Exception as e:
