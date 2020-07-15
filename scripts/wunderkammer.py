@@ -30,7 +30,7 @@ class source:
     def get_image(self, url):
         raise Exception("Not implemented")
 
-class sqlite_source(source):
+class wunderkammer_source(source):
 
     def __init__(self):
         pass
@@ -42,13 +42,15 @@ class sqlite_source(source):
             conn = sqlite3.connect(url)
             cursor = conn.cursor()
 
-            cursor.execute("SELECT body FROM images ORDER BY RANDOM() LIMIT 1")
+            cursor.execute("SELECT body FROM oembed ORDER BY RANDOM() LIMIT 1")
             row = cursor.fetchone()
 
-            b64 = base64.b64decode(row[0])
-            raw = io.Bytes(b64)
+            oembed_data = json.loads(row[0])
+            data_url = oembed_data["data_url"]
 
-            return Image.open(raw)
+            rsp = urlopen(data_url)
+
+            return Image.open(rsp)
         
         except Exception as e:
             logging.error(e)
@@ -88,12 +90,13 @@ if __name__ == "__main__":
     epd = epd7in5_V2.EPD()
     epd.init()
 
-    url = "images.db"
-    src = sqlite_source()
+    src_uri = sys.argv[1]
+    src = wunderkammer_source()
 
-    im = src.get_image(url)
+    im = src.get_image(src_uri)
 
     if not im:
+        logging.warning("Failed to retrieve image")
         sys.exit(1)
 
     render_image(epd, im)
