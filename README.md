@@ -2,6 +2,10 @@
 
 Python tools for working with "wunderkammer" databases and Waveshare e-ink display.
 
+## Important
+
+This is work in progress and documentation remains incomplete. In the meantime have a look at the [just how easy](https://www.aaronland.info/weblog/2020/07/20/dots/#easy) blog post for background.
+
 ## Scripts
 
 ### wunderkammer.py
